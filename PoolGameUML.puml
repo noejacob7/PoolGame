@@ -1,0 +1,693 @@
+@startuml
+class PoolGame.Config.PocketConfig {
+- PositionConfig position
+- double radius
++ <<Create>> PocketConfig(Object)
++ <<Create>> PocketConfig(PositionConfig,double)
+- void init(PositionConfig,double)
++ Configurable parseJSON(Object)
++ PositionConfig getPositionConfig()
++ double getRadius()
+}
+class PoolGame.Memento.BallData {
+- double xPos
+- double yPos
+- int fallCounter
+- boolean disabled
++ <<Create>> BallData(double,double,int,boolean)
++ double getXPos()
++ void setXPos(double)
++ double getYPos()
++ void setYPos(double)
++ int getFallCounter()
++ void setFallCounter(int)
++ boolean isDisabled()
++ void setDisabled(boolean)
+}
+class PoolGame.Items.ScoreBoard {
+- {static} ScoreBoard instance
+- int score
+- <<Create>> ScoreBoard()
++ {static} ScoreBoard getInstance()
++ int getScore()
++ void setScore(int)
++ void incrementScore(int)
++ void resetScore()
+}
+interface PoolGame.Builder.BallBuilder {
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Builder.WhiteBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> WhiteBallBuilder()
++ <<Create>> WhiteBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Config.PocketsConfig {
+- List<PocketConfig> pocket
++ <<Create>> PocketsConfig(Object)
++ <<Create>> PocketsConfig(List<PocketConfig>)
+- void init(List<PocketConfig>)
++ Configurable parseJSON(Object)
++ List<PocketConfig> getPocketConfigs()
+}
+class PoolGame.Config.PositionConfig {
+- double x
+- double y
++ <<Create>> PositionConfig(Object)
++ <<Create>> PositionConfig(double,double)
+- void init(double,double)
++ Configurable parseJSON(Object)
++ double getX()
++ double getY()
+}
+class PoolGame.Strategy.PocketOnce {
++ void fallIntoPocket(Game,Ball)
+}
+class PoolGame.Config.VelocityConfig {
+- double x
+- double y
++ <<Create>> VelocityConfig(Object)
++ <<Create>> VelocityConfig(double,double)
+- void init(double,double)
++ Configurable parseJSON(Object)
++ double getX()
++ double getY()
+}
+class PoolGame.App {
++ {static} double FRAMETIME
+- ConfigReader loadConfig(List<String>)
++ void start(Stage)
++ {static} void main(String[])
+}
+class PoolGame.ConfigReader {
+- String path
+- boolean isResourcesDir
+- GameConfig config
++ <<Create>> ConfigReader(String,boolean)
+- JSONObject readFile()
++ void parse()
+- void checkRequiredKey(JSONObject,String[])
++ String getPath()
++ GameConfig getConfig()
++ void reload()
+}
+class PoolGame.ConfigReader.ConfigKeyMissingException {
++ <<Create>> ConfigKeyMissingException(String)
+}
+class PoolGame.Builder.BlueBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> BlueBallBuilder()
++ <<Create>> BlueBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Builder.BrownBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> BrownBallBuilder()
++ <<Create>> BrownBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Factory.TableConfigFactory {
++ Configurable make(Object)
+}
+class PoolGame.ReadFactory.EasyFactory {
++ ConfigReader make()
+}
+class PoolGame.Observer.BlueBallCheat {
+- {static} BlueBallCheat instance
+- List<Observer> observers
+- <<Create>> BlueBallCheat()
++ {static} BlueBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+class PoolGame.ReadFactory.HardFactory {
++ ConfigReader make()
+}
+class PoolGame.Builder.RedBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> RedBallBuilder()
++ <<Create>> RedBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Observer.BrownBallCheat {
+- {static} BrownBallCheat instance
+- List<Observer> observers
+- <<Create>> BrownBallCheat()
++ {static} BrownBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+class PoolGame.Config.GameConfig {
+- TableConfig table
+- BallsConfig balls
++ <<Create>> GameConfig(TableConfig,BallsConfig)
+- void init(TableConfig,BallsConfig)
++ Configurable parseJSON(Object)
++ TableConfig getTableConfig()
++ BallsConfig getBallsConfig()
+}
+class PoolGame.Memento.Caretaker {
+- List<Memento> mementoList
+- boolean undo
++ boolean isUndo()
++ void setUndo(boolean)
++ void add(Memento)
++ Memento getMemento()
++ Memento getLastMemento()
+}
+class PoolGame.ReadFactory.NormalFactory {
++ ConfigReader make()
+}
+class PoolGame.Items.Ball {
+~ {static} double RADIUS
+- double HIT_FORCE_MULTIPLIER
+- double MIN_VEL
+- double MAX_HIT_FORCE_MAG
+- double[] originalPos
+- double[] originalVel
+- double[] vel
+- double mass
+- Color colour
+- Circle shape
+- Line mouseDragLine
+- Circle mousePointer
+- BallType type
+- BallPocketStrategy pocketAction
+- ScoreBoard scoreBoard
+- int scoreIncrement
+- boolean disabled
+- int fallCounter
++ <<Create>> Ball(String,double,double,double,double,double,BallType,BallPocketStrategy)
++ <<Create>> Ball()
++ int getScoreIncrement()
++ void setScoreIncrement(int)
++ double getRadius()
++ void setFallCounter(int)
++ double getXPos()
++ double getYPos()
++ void setDisabled(boolean)
++ double getXVel()
++ double getYVel()
++ double getMass()
++ BallType getBallType()
++ Node getNode()
++ Bounds getLocalBounds()
++ BallPocketStrategy getPocketAction()
++ int getFallCounter()
++ boolean isDisabled()
++ boolean hasStopped()
++ void addToGroup(ObservableList<Node>)
++ void setXVel(double)
++ void setYVel(double)
++ void setColour(String)
++ void setInitialXPos(double)
++ void setInitialYPos(double)
++ void setXPos(double)
++ void setYPos(double)
++ void setInitialXVel(double)
++ void setInitialYVel(double)
++ void setPocketAction(BallPocketStrategy)
++ void setMass(double)
++ void setBallType(BallType)
++ void incrementFallCounter()
++ void disable()
++ void resetPosition()
++ void resetVelocity()
++ void reset()
+- void registerCueBallMouseAction()
++ boolean isColliding(Ball)
+- Point2D calculateCueBallVelOnHit(double,double)
++ void handleCollision(Ball)
++ void applyFriction(double)
++ void move()
++ void incrementScore()
++ void fallIntoPocket(Game)
++ void update()
+}
+enum PoolGame.Items.BallType {
++  CUEBALL
++  NORMALBALL
+}
+interface PoolGame.Movable {
++ double getXPos()
++ double getYPos()
++ double getXVel()
++ double getYVel()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void applyFriction(double)
++ void move()
+}
+class PoolGame.Observer.PurpleBallCheat {
+- {static} PurpleBallCheat instance
+- List<Observer> observers
+- <<Create>> PurpleBallCheat()
++ {static} PurpleBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+interface PoolGame.Config.Configurable {
++ Configurable parseJSON(Object)
+}
+class PoolGame.Builder.OrangeBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> OrangeBallBuilder()
++ <<Create>> OrangeBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Items.Pocket {
++ {static} double RADIUS
+# Color colour
+# Circle shape
++ <<Create>> Pocket(double,double)
++ <<Create>> Pocket(double,double,double)
++ <<Create>> Pocket(PocketConfig)
++ boolean isInPocket(Point2D)
++ Node getNode()
++ void addToGroup(ObservableList<Node>)
+}
+class PoolGame.Observer.OrangeBallCheat {
+- {static} OrangeBallCheat instance
+- List<Observer> observers
+- <<Create>> OrangeBallCheat()
++ {static} OrangeBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+class PoolGame.Observer.RedBallCheat {
+- {static} RedBallCheat instance
+- List<Observer> observers
+- <<Create>> RedBallCheat()
++ {static} RedBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+class PoolGame.Config.BallsConfig {
+- List<BallConfig> ball
++ <<Create>> BallsConfig(Object)
++ <<Create>> BallsConfig(List<BallConfig>)
+- void init(List<BallConfig>)
++ Configurable parseJSON(Object)
++ List<BallConfig> getBallConfigs()
+}
+class PoolGame.Config.ConfigChecker {
++ {static} boolean colourChecker(String)
+}
+class PoolGame.Builder.YellowBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> YellowBallBuilder()
++ <<Create>> YellowBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Factory.BallsConfigFactory {
++ Configurable make(Object)
+}
+class PoolGame.Game {
+- Label score
+- Caretaker caretaker
+- PoolTable table
+- boolean shownWonText
+- Text winText
+- Group root
+- LevelFactoryRegistry registry
+- Scene scene
+- ScoreBoard scoreBoard
+- int timer
+- Label timeLabel
+- boolean saveState
++ <<Create>> Game(ConfigReader)
++ <<Create>> Game(ConfigReader,Group,Scene)
++ Group getRoot()
++ void setRoot(Group)
++ Scene getScene()
++ void setScene(Scene)
++ void setup(ConfigReader)
++ double getWindowDimX()
++ double getWindowDimY()
++ PoolTable getPoolTable()
++ void addDrawables(Group)
++ void reset()
++ void setButton()
++ void tick()
++ Memento saveStateToMemento()
++ void getStateFromMemento(Memento)
+}
+class PoolGame.Factory.ConfigFactoryRegistry {
+- Map<String,ConfigFactory> registry
++ void registerDefault()
++ void register(String,ConfigFactory)
++ ConfigFactory unregister(String)
++ ConfigFactory getFactory(String)
++ Configurable create(String,Object)
+}
+interface PoolGame.Strategy.BallPocketStrategy {
++ void fallIntoPocket(Game,Ball)
+}
+class PoolGame.ReadFactory.LevelFactoryRegistry {
+- Group root
+- Map<String,LevelFactory> registry
++ void registerDefault()
++ void register(String,LevelFactory)
++ LevelFactory unregister(String)
++ LevelFactory getFactory(String)
++ void create(String,Game)
+}
+interface PoolGame.Drawable {
++ Node getNode()
++ void addToGroup(ObservableList<Node>)
+}
+class PoolGame.Config.SizeConfig {
+- long x
+- long y
++ <<Create>> SizeConfig(Object)
++ <<Create>> SizeConfig(long,long)
+- void init(long,long)
++ Configurable parseJSON(Object)
++ long getX()
++ long getY()
+}
+class PoolGame.Observer.YellowBallCheat {
+- {static} YellowBallCheat instance
+- List<Observer> observers
+- <<Create>> YellowBallCheat()
++ {static} YellowBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+class PoolGame.Observer.GreenBallCheat {
+- {static} GreenBallCheat instance
+- List<Observer> observers
+- <<Create>> GreenBallCheat()
++ {static} GreenBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+interface PoolGame.Factory.ConfigFactory {
++ Configurable make(Object)
+}
+class PoolGame.Builder.PurpleBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> PurpleBallBuilder()
++ <<Create>> PurpleBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Items.PoolTable {
+- long[] dim
+- String colourName
+- Color colour
+- double friction
+- Rectangle shape
+- List<Ball> balls
+- List<Pocket> pockets
++ {static} double POCKET_OFFSET
++ <<Create>> PoolTable(String,double,long,long,PocketsConfig)
++ <<Create>> PoolTable(TableConfig)
+- void init(String,double,long,long,PocketsConfig)
++ long getDimX()
++ long getDimY()
++ Color getColour()
++ double getFriction()
++ Node getNode()
++ void addBall(Ball)
++ void addPocket(Pocket)
++ List<Ball> getBalls()
++ void setupBalls(List<Ball>)
++ void setupPockets(List<Pocket>)
++ void addToGroup(ObservableList<Node>)
++ void applyFrictionToBalls()
++ void checkPocket(Game)
++ void handleCollision()
++ boolean hasWon()
++ void reset()
++ boolean allBallsHasStopped()
+}
+class PoolGame.Builder.BlackBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> BlackBallBuilder()
++ <<Create>> BlackBallBuilder(BallType,BallPocketStrategy,int)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+class PoolGame.Strategy.PocketTwice {
+- int FALL_COUNTER_THRESHOLD
++ void fallIntoPocket(Game,Ball)
+}
+class PoolGame.Config.BallConfig {
+- String colour
+- PositionConfig position
+- VelocityConfig velocity
+- double mass
++ <<Create>> BallConfig(Object)
++ <<Create>> BallConfig(String,PositionConfig,VelocityConfig,double)
+- void init(String,PositionConfig,VelocityConfig,double)
++ Configurable parseJSON(Object)
++ String getColour()
++ PositionConfig getPositionConfig()
++ VelocityConfig getVelocityConfig()
++ double getMass()
+}
+class PoolGame.Builder.BallBuilderDirector {
+- Map<String,BallBuilder> builders
++ <<Create>> BallBuilderDirector()
++ void register(String,BallBuilder)
++ void registerDefault()
++ Ball construct(BallConfig)
+}
+class PoolGame.Strategy.GameReset {
++ void fallIntoPocket(Game,Ball)
+}
+interface PoolGame.Observer.Subject {
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+class PoolGame.Memento.Memento {
+- List<BallData> balls
+- boolean shownWonText
+- int score
+- int timer
++ <<Create>> Memento(PoolTable,boolean,int,int)
++ List<BallData> getBalls()
++ boolean isShownWonText()
++ int getScore()
++ int getTimer()
+}
+class PoolGame.Builder.GreenBallBuilder {
+- Ball ball
+- BallType ballType
+- BallPocketStrategy action
+- Integer scoreIncrement
++ <<Create>> GreenBallBuilder()
++ <<Create>> GreenBallBuilder(BallType,BallPocketStrategy,Integer)
++ void reset()
++ void setXPos(double)
++ void setYPos(double)
++ void setXVel(double)
++ void setYVel(double)
++ void setMass(double)
++ void setBallType(BallType)
++ void setPocketAction(BallPocketStrategy)
++ void setScoreIncrement(int)
++ Ball finaliseBuild()
+}
+interface PoolGame.Observer.Observer {
++ void update()
+}
+class PoolGame.Config.TableConfig {
+- String colour
+- double friction
+- SizeConfig size
+- PocketsConfig pockets
++ <<Create>> TableConfig(Object)
++ <<Create>> TableConfig(String,double,SizeConfig,PocketsConfig)
+- void init(String,double,SizeConfig,PocketsConfig)
++ Configurable parseJSON(Object)
++ String getColour()
++ double getFriction()
++ SizeConfig getSizeConfig()
++ PocketsConfig getPocketsConfig()
+}
+class PoolGame.Observer.BlackBallCheat {
+- {static} BlackBallCheat instance
+- List<Observer> observers
+- <<Create>> BlackBallCheat()
++ {static} BlackBallCheat getInstance()
++ void reset()
++ void attach(Observer)
++ void detach(Observer)
++ void notifyUpdate()
+}
+interface PoolGame.ReadFactory.LevelFactory {
++ ConfigReader make()
+}
+class PoolGame.Strategy.PocketThrice {
+- int FALL_COUNTER_THRESHOLD
++ void fallIntoPocket(Game,Ball)
+}
+
+
+PoolGame.Config.Configurable <|.. PoolGame.Config.PocketConfig
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.WhiteBallBuilder
+PoolGame.Config.Configurable <|.. PoolGame.Config.PocketsConfig
+PoolGame.Config.Configurable <|.. PoolGame.Config.PositionConfig
+PoolGame.Strategy.BallPocketStrategy <|.. PoolGame.Strategy.PocketOnce
+PoolGame.Config.Configurable <|.. PoolGame.Config.VelocityConfig
+javafx.application.Application <|-- PoolGame.App
+PoolGame.ConfigReader +.. PoolGame.ConfigReader.ConfigKeyMissingException
+PoolGame.Exception <|-- PoolGame.ConfigReader.ConfigKeyMissingException
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.BlueBallBuilder
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.BrownBallBuilder
+PoolGame.Factory.ConfigFactory <|.. PoolGame.Factory.TableConfigFactory
+PoolGame.ReadFactory.LevelFactory <|.. PoolGame.ReadFactory.EasyFactory
+PoolGame.Observer.Subject <|.. PoolGame.Observer.BlueBallCheat
+PoolGame.ReadFactory.LevelFactory <|.. PoolGame.ReadFactory.HardFactory
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.RedBallBuilder
+PoolGame.Observer.Subject <|.. PoolGame.Observer.BrownBallCheat
+PoolGame.Config.Configurable <|.. PoolGame.Config.GameConfig
+PoolGame.ReadFactory.LevelFactory <|.. PoolGame.ReadFactory.NormalFactory
+PoolGame.Drawable <|.. PoolGame.Items.Ball
+PoolGame.Movable <|.. PoolGame.Items.Ball
+PoolGame.Observer.Observer <|.. PoolGame.Items.Ball
+PoolGame.Observer.Subject <|.. PoolGame.Observer.PurpleBallCheat
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.OrangeBallBuilder
+PoolGame.Drawable <|.. PoolGame.Items.Pocket
+PoolGame.Observer.Subject <|.. PoolGame.Observer.OrangeBallCheat
+PoolGame.Observer.Subject <|.. PoolGame.Observer.RedBallCheat
+PoolGame.Config.Configurable <|.. PoolGame.Config.BallsConfig
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.YellowBallBuilder
+PoolGame.Factory.ConfigFactory <|.. PoolGame.Factory.BallsConfigFactory
+PoolGame.Config.Configurable <|.. PoolGame.Config.SizeConfig
+PoolGame.Observer.Subject <|.. PoolGame.Observer.YellowBallCheat
+PoolGame.Observer.Subject <|.. PoolGame.Observer.GreenBallCheat
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.PurpleBallBuilder
+PoolGame.Drawable <|.. PoolGame.Items.PoolTable
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.BlackBallBuilder
+PoolGame.Strategy.BallPocketStrategy <|.. PoolGame.Strategy.PocketTwice
+PoolGame.Config.Configurable <|.. PoolGame.Config.BallConfig
+PoolGame.Strategy.BallPocketStrategy <|.. PoolGame.Strategy.GameReset
+PoolGame.Builder.BallBuilder <|.. PoolGame.Builder.GreenBallBuilder
+PoolGame.Config.Configurable <|.. PoolGame.Config.TableConfig
+PoolGame.Observer.Subject <|.. PoolGame.Observer.BlackBallCheat
+PoolGame.Strategy.BallPocketStrategy <|.. PoolGame.Strategy.PocketThrice
+@enduml
